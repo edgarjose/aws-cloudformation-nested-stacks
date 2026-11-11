@@ -17,7 +17,7 @@ Parameters:
   VpcID:
     Description: The name of the VPC stack
     Type: String
-  
+
   PublicSubnet1:
     Description: Import Public subnet 1
     Type: String
@@ -25,7 +25,7 @@ Parameters:
   PublicSubnet2:
     Description: Import Public subnet 2
     Type: String
-  
+
   SecurityGroupALB:
     Description: Import ALB Security group
     Type: String
@@ -38,8 +38,7 @@ Resources:
       LoadBalancerAttributes:
         - Key: idle_timeout.timeout_seconds
           Value: '60'
-      Name: PraticalALB
-      Scheme: internet-facing 
+      Scheme: internet-facing
       SecurityGroups:
         - !Ref SecurityGroupALB
       Subnets:
@@ -73,7 +72,6 @@ Resources:
       UnhealthyThresholdCount: 2
       Matcher:
         HttpCode: 200
-      Name: PraticalTargetGroup
       Port: 80
       Protocol: HTTP
       TargetType: instance
@@ -91,5 +89,5 @@ Outputs:
   # Export Load Balancer Target Group
   ALBTargetGroup:
     Description: Web Server target group
-    Value: 
+    Value:
       Ref: PraticalTargetGroup

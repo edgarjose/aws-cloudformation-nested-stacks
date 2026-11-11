@@ -6,12 +6,12 @@ Resources:
   VCPStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://backupbucket0001.s3.us-east-1.amazonaws.com/vpc-subnets.yaml
-  
+      TemplateURL: vpc-subnets.yaml
+
   NatGatewayStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://backupbucket0001.s3.us-east-1.amazonaws.com/natgateway.yaml
+      TemplateURL: natgateway.yaml
       Parameters:
         VpcID: !GetAtt VCPStack.Outputs.VpcID
         PublicSubnet1: !GetAtt VCPStack.Outputs.PublicSubnet1
@@ -22,17 +22,18 @@ Resources:
   ALBStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: https://backupbucket0001.s3.us-east-1.amazonaws.com/alb.yaml
+      TemplateURL: alb.yaml
       Parameters:
         VpcID: !GetAtt VCPStack.Outputs.VpcID
         PublicSubnet1: !GetAtt VCPStack.Outputs.PublicSubnet1
         PublicSubnet2: !GetAtt VCPStack.Outputs.PublicSubnet2
         SecurityGroupALB: !GetAtt VCPStack.Outputs.SecurityGroupALB
-  
+
   ASGStack:
     Type: AWS::CloudFormation::Stack
+    DependsOn: NatGatewayStack
     Properties:
-      TemplateURL: https://backupbucket0001.s3.us-east-1.amazonaws.com/asg.yaml
+      TemplateURL: asg.yaml
       Parameters:
         VpcID: !GetAtt VCPStack.Outputs.VpcID
         PrivateSubnet1: !GetAtt VCPStack.Outputs.PrivateSubnet1
